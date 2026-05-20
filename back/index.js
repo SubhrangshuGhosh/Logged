@@ -23,10 +23,12 @@ app.use(cors());
 app.use('/auth', AuthRouter);
 app.use('/products', ProductRouter);
 
-module.exports = app;
-
+// Only listen locally, not on Vercel
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
         console.log(`Server is running on ${PORT}`);
     });
 }
+
+// Export for Vercel (must be at the end)
+module.exports = app;
