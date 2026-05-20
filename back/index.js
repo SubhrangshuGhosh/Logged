@@ -7,10 +7,14 @@ const ProductRouter = require('./Routes/ProductRouter');
 require('dotenv').config();
 require('./Models/db');
 
-const PORT = process.env.PORT || 3000;  // Changed from 8080 to 3000
+const PORT = process.env.PORT || 3000;
 
 app.get('/ping', (req, res) => {
     res.send("PING");
+});
+
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Backend is running!' });
 });
 
 app.use(bodyParse.json());
@@ -19,6 +23,10 @@ app.use(cors());
 app.use('/auth', AuthRouter);
 app.use('/products', ProductRouter);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
-});
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on ${PORT}`);
+    });
+}
